@@ -48,6 +48,7 @@ GEM
       io-like (~> 0.3.0)
     arel (9.0.0)
     bindex (0.5.0)
+    blankslate (3.1.3)
     bootsnap (1.3.2)
       msgpack (~> 1.0)
     builder (3.2.3)
@@ -140,6 +141,9 @@ GEM
       ffi (>= 0.5.0, < 2)
     ruby_dep (1.5.0)
     rubyzip (1.2.2)
+    rupy (0.4.2)
+      blankslate (>= 2.1.2.3)
+      ffi (>= 0.6.3)
     sass (3.6.0)
       sass-listen (~> 4.0.0)
     sass-listen (4.0.0)
@@ -201,6 +205,7 @@ DEPENDENCIES
   listen (>= 3.0.5, < 3.2)
   puma (~> 3.11)
   rails (~> 5.2.1)
+  rupy
   sass-rails (~> 5.0)
   selenium-webdriver
   spring
