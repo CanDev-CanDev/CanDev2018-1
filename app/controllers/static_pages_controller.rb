@@ -9,7 +9,9 @@ class StaticPagesController < ApplicationController
 
 
 		@twitter_data = get_twitter_data()
+		@clinical_trial_data = get_vaccine_data()
+		@guradian_data = get_guradian_data()
 
-		debugger
+		flash[:warning] = "hello"
 	end
 end
