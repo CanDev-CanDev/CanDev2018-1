@@ -2,16 +2,16 @@ class ApplicationController < ActionController::Base
 
 	def get_pub_med_data(options = { url_ids: "", url_abstracts: "" } )
 
-		data = HTTParty.get(url_ids)
+		data = HTTParty.get(options[:url_ids])
 		list = data["esearchresult"]["idlist"]
 
 		first = list[0]
 		second = list[1]
 		third = list[2]
 
-		first_json = HTTParty.get(url_abstracts+first).to_json
-		second_json = HTTParty.get(url_abstracts+second).to_json
-		third_json = HTTParty.get(url_abstracts+third).to_json
+		first_json = HTTParty.get(options[:url_abstracts]+first)
+		second_json = HTTParty.get(options[:url_abstracts]+second)
+		third_json = HTTParty.get(options[:url_abstracts]+third)
 
 		first_abstract = first_json.parsed_response
 		second_abstract = second_json.parsed_response
@@ -26,7 +26,7 @@ class ApplicationController < ActionController::Base
 		second_abs_title = second_abs_list[1]
 		second_full_abstract = second_abs_list.max_by(&:length)
 		third_abs_title = third_abs_list[1]
-		third_full_abstract = sthird_abs_list.max_by(&:length)
+		third_full_abstract = third_abs_list.max_by(&:length)
 
 		dictionary_of_data = {}
 
@@ -94,6 +94,7 @@ class ApplicationController < ActionController::Base
 	
 
 		end
+	end
 
 	def get_vaccine_data()
 		#find new vaccines for diseases
@@ -101,20 +102,6 @@ class ApplicationController < ActionController::Base
 		#list its ingredients
 
 		
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 	end
 
 end
