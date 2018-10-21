@@ -8,13 +8,8 @@ class StaticPagesController < ApplicationController
 
 
 
+		@twitter_data = get_twitter_data()
 
-
-
-
-
-
-
-
+		debugger
 	end
 end

@@ -48,7 +48,7 @@ class ApplicationController < ActionController::Base
 		  config.access_token_secret = "8HElIlqp1VEP7Cv6rkV4x2g1m5mfRnKh0xIvtYPS8dtfO"
 		end
 
-		#gem install sentimental
+		#gem  'sentimental'
 		#require 'sentimental'
 		analyzer = Sentimental.new
 		analyzer.load_defaults
@@ -56,19 +56,19 @@ class ApplicationController < ActionController::Base
 
 		dictionary_of_tweets = {}
 		client.search("#influenza",result_type: "recent").take(30).each do |tweet|
-			dictonary_of_tweets[tweet.text] = analyzer.sentiment tweet.text
+			dictionary_of_tweets[tweet.text] = analyzer.sentiment tweet.text
 		end
 
 		list_of_values = []
-		dictionary.keys.each do |v|
-			list_of_values.push(dictionary[v])
+		dictionary_of_tweets.keys.each do |v|
+			list_of_values.push(dictionary_of_tweets[v])
 
 		final_counts = list_of_values.group_by(&:itself).transform_values(&:count)
 
 	#proportion of positive,negative,neutral tweets
-		total_count = (final_counts[final_counts[0]] + final_counts[final_counts[1]] + final_counts[final_counts[2]]).to_f
+		total_count = final_counts.values.sum.to_f
 		positive_count_proportion = ((final_counts[:positive]).to_f / total_count)*100
-		negative_count_proportion = ((final_count[:negative]).to_f / total_count)*100
+		negative_count_proportion = ((final_counts[:negative]).to_f / total_count)*100
 		neutral_count_proportion = ((final_counts[:neutral]).to_f / total_count)*100
 
 
@@ -78,10 +78,10 @@ class ApplicationController < ActionController::Base
 
 
 		change_dictionary = {}
-		change_dictionary['yesterday_total'] = 0
-		change_dictionary['yesterday_positive'] = 0
-		change_dictionary['yesterday_negative'] = 0
-		change_dictionary['yesterday_neutral'] = 0
+		change_dictionary['yesterday_total'] = 2
+		change_dictionary['yesterday_positive'] = 3
+		change_dictionary['yesterday_negative'] = 8
+		change_dictionary['yesterday_neutral'] = 12
 		change_dictionary['total_count'] = total_count
 		change_dictionary['positive_count_proportion'] = positive_count_proportion
 		change_dictionary['negative_count_proportion'] = negative_count_proportion
@@ -91,7 +91,8 @@ class ApplicationController < ActionController::Base
 		change_in_positive_proportion = (change_dictionary['yesterday_positive'].to_f - change_dictionary['positive_count_proportion'].to_f) * 100
 		change_in_negative_proportion = (change_dictionary['yesterday_negative'].to_f - change_dictionary['negative_count_proportion'].to_f) * 100
 		change_in_neutral_proportion = (change_dictionary['yesterday_neutral'].to_f - change_dictionary['neutral_count_proportion'].to_f) * 100
-	
+		
+		return change_dictionary
 
 		end
 	end

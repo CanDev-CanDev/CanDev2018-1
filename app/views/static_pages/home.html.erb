@@ -1,7 +1,12 @@
+
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+
 <header class="navbar navbar-fixed-top navbar-inverse">
   <div class="container">
     <%= link_to "Medicover", '#', id: "logo" %>
     <nav>
+
       <ul class="nav navbar-nav navbar-right">
         <li><%= link_to "Home",   '#' %></li>
         <li><%= link_to "Help",   '#' %></li>
@@ -15,7 +20,10 @@
 <div class="container">
   <div class="center jumbotron">
   <h1>Influenza News Today!</h1>
-
+  <div class="center">
+  <%= link_to image_tag("govt-of-canada.png", alt: "Rails logo", :size => "260x180", class: "img-responsive center-block"),
+            '#' %>
+            </div>
   <h2>
     Welcome to the one stop shop for all Influenza news
   </h2>
@@ -39,16 +47,54 @@
   </aside>
 
     <aside class="col-md-4">
-    <section class="user_info">
+    <section class="user_info" style="background-color:rgba(220,220,220,0.3);">
       <h1>
-        Hello
+        Twitter Reports
       </h1>
+      <%= bar_chart [
+  {
+    name: "Positive", 
+    data: [["Yesterday", @twitter_data["yesterday_positive"]], ["Today", @twitter_data["positive_count_proportion"]]]
+  },
+  {
+    name: "Neutral", 
+    data: [["Yesterday", @twitter_data["yesterday_neutral"]], ["Today", @twitter_data["neutral_count_proportion"]]]
+  },
+  {
+    name: "Negative", 
+    data: [["Yesterday", @twitter_data["yesterday_negative"]], ["Today", @twitter_data["negative_count_proportion"]]]
+  },
+  {
+    name: "Total",
+    data: [["Yesterday", @twitter_data["yesterday_total"]], ["Today", @twitter_data["total_count"]]] 
+  }
+
+] %>
     </section>
   </aside>
 
-  <div class="col-md-8">
-    World Map
+
+  <div class="row">
+  	<aside class="col-md-8">
+	    <section class="user_info">
+	    	<div id="regions_div"></div>
+	    </section>
+  	</aside>
+  	<aside class="col-md-4" style="background-color:rgba(220,220,220,0.5);">
+  		<section style="">
+  			<h1> Pub Med News </h1>
+
+  			<ul class="list-group">
+  				<% @pub_med.each_with_index do |(k,v), index| %>
+  					<li class="list-group-item list-group-item-danger"><strong><%= k%></strong> <br> <%= v[0..80]%> <%= link_to "More", "#" %></li>
+  				<% end %>
+			</ul>
+
+ 
+  		</section>
+  	</aside>
   </div>
+
 </div>
 
 <footer class="footer">
@@ -66,6 +112,34 @@
 </footer>
 
 </div>
+
+<script type="text/javascript">
+	 google.charts.load('current', {
+        'packages':['geochart'],
+        // Note: you will need to get a mapsApiKey for your project.
+        // See: https://developers.google.com/chart/interactive/docs/basic_load_libs#load-settings
+        'mapsApiKey': 'AIzaSyD-9tSrke72PouQMnMX-a7eZSW0jkFMBWY'
+      });
+      google.charts.setOnLoadCallback(drawRegionsMap);
+
+      function drawRegionsMap() {
+        var data = google.visualization.arrayToDataTable([
+          ['Country', 'Popularity'],
+          ['Germany', 200],
+          ['United States', 300],
+          ['Brazil', 400],
+          ['Canada', 500],
+          ['France', 600],
+          ['RU', 700]
+        ]);
+
+        var options = {backgroundColor: '#555'};
+
+        var chart = new google.visualization.GeoChart(document.getElementById('regions_div'));
+
+        chart.draw(data, options);
+      }
+</script>
 
 
 
